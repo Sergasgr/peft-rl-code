@@ -125,8 +125,8 @@ def evaluate_kodcode(model, tokenizer, records: list[dict], n: int = 1) -> tuple
     results = run_many(codes, [r["tests"] for r in records])
     metrics = _measure_all(codes, [r["entry_point"] for r in records], [r["ref_cc"] for r in records])
     rows = [
-        {"id": r["id"], "passed": res.passed, "status": res.status, **m}
-        for r, res, m in zip(records, results, metrics, strict=True)
+        {"id": r["id"], "passed": res.passed, "status": res.status, **m, "code": code}
+        for r, res, m, code in zip(records, results, metrics, codes, strict=True)
     ]
     return summarize(rows), rows
 

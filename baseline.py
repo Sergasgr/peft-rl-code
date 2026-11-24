@@ -17,7 +17,7 @@ import torch
 from coderl.config import DEFAULTS, git_state, output_root
 from coderl.data import load_split
 from coderl.evaluation import evaluate_kodcode
-from run import PACKAGES, evaluate, load_model, model_sha, per_task
+from run import PACKAGES, evaluate, load_model, model_sha, per_task, save_rows
 
 
 def main(argv: list[str] | None = None) -> Path:
@@ -44,6 +44,7 @@ def main(argv: list[str] | None = None) -> Path:
         records = load_split(args.data_dir, "test")[: params["eval_limit"]]
         summary, rows = evaluate_kodcode(model, tokenizer, records, n=args.best_of_n)
         evaluation[f"kodcode_test_best_of_{args.best_of_n}"] = {**summary, "per_task": per_task(rows)}
+        save_rows(workdir / f"kodcode_test_best_of_{args.best_of_n}.jsonl", rows)
 
     from importlib.metadata import version
 

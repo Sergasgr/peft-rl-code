@@ -129,3 +129,7 @@ def test_baseline_with_best_of_n(tmp_path, monkeypatch, tiny_model_dir, data_dir
     )
     result = json.loads(path.read_text())
     assert set(result["eval"]) == {"kodcode_valid", "kodcode_test", "kodcode_test_best_of_3"}
+    saved = tmp_path / "runs" / f"baseline--{tiny_model_dir.name}"
+    for split in ("kodcode_valid", "kodcode_test", "kodcode_test_best_of_3"):
+        rows = [json.loads(line) for line in (saved / f"{split}.jsonl").read_text().splitlines()]
+        assert len(rows) == 2 and "code" in rows[0] and "passed" in rows[0]

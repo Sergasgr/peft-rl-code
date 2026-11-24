@@ -4,6 +4,7 @@ from coderl.quality import (
     is_noop,
     max_cyclomatic_complexity,
     measure,
+    pylint_score,
     quality_score,
     ruff_violations,
     trivial_body,
@@ -61,6 +62,15 @@ def test_quality_score_rewards_lint_and_relative_complexity():
 def test_quality_score_can_be_gamed_on_purpose():
     """The `quality` reward has no correctness check: a do-nothing function scores the maximum."""
     assert quality_score("def add(a, b):\n    return 0\n", "add", ref_cc=3) == 1.0
+
+
+def test_pylint_score_ignores_snippet_artifacts():
+    """No final newline (extract_code strips it) and no module docstring don't cost points."""
+    code = 'def add(a, b):\n    """Sum of a and b."""\n    return a + b'
+    assert pylint_score(code) == pylint_score(code + "\n") == 10.0
+    assert (
+        pylint_score(code.replace('    """Sum of a and b."""\n', "")) < 10.0
+    )  # a missing function docstring still counts
 
 
 def test_measure_includes_independent_metrics():

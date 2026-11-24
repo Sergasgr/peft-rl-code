@@ -99,12 +99,19 @@ def per_task(rows: list[dict]) -> str:
     return "".join("1" if r["passed"] else "0" for r in rows)
 
 
+def save_rows(path: Path, rows: list[dict]) -> None:
+    """One line per task (code, tests passed, metrics) in runs/, which isn't committed."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows), encoding="utf-8")
+
+
 def evaluate(model, tokenizer, params: dict, data_dir: Path, workdir: Path) -> dict:
     limit = params["eval_limit"]
     out = {}
     for split in ("valid", "test"):
         summary, rows = evaluate_kodcode(model, tokenizer, load_split(data_dir, split)[:limit])
         out[f"kodcode_{split}"] = {**summary, "per_task": per_task(rows)}
+        save_rows(workdir / f"kodcode_{split}.jsonl", rows)
     if params["evalplus"]:
         for name in ("humaneval", "mbpp"):
             try:

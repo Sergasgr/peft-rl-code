@@ -117,12 +117,14 @@ def quality_score(code: str, entry_point: str, ref_cc: int) -> float:
 
 
 def pylint_score(code: str) -> float | None:
+    """pylint's 0-10 score. extract_code() strips the final newline and a solution is a snippet, not a module, so
+    missing-final-newline and missing-module-docstring would be a fixed penalty that is larger for shorter code."""
     if not parses(code):
         return None
     with tempfile.TemporaryDirectory() as tmp:
         path = os.path.join(tmp, "solution.py")
         with open(path, "w", encoding="utf-8") as f:
-            f.write(code)
+            f.write(code.rstrip("\n") + "\n")
         result = subprocess.run(
             [
                 sys.executable,
@@ -131,7 +133,7 @@ def pylint_score(code: str) -> float | None:
                 "--output-format=json2",
                 "--score=y",
                 "--persistent=n",
-                "--disable=import-error",
+                "--disable=import-error,missing-module-docstring",
                 path,
             ],
             capture_output=True,

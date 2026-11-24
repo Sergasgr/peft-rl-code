@@ -56,7 +56,7 @@ def test_evaluate_kodcode_end_to_end(tiny, data_dir, monkeypatch):
     records = load_split(data_dir, "test")
     summary, rows = evaluation.evaluate_kodcode(model, tokenizer, records)
     assert summary["n"] == 2 and summary["pass@1"] == 0.0  # a random model solves nothing
-    assert {"passed", "noop", "ruff", "cc", "pylint", "mi", "quality"} <= set(rows[0])
+    assert {"passed", "noop", "ruff", "cc", "pylint", "mi", "quality", "code"} <= set(rows[0])
     summary, _ = evaluation.evaluate_kodcode(model, tokenizer, records, n=3)  # best-of-n path
     assert summary["n"] == 2
 
