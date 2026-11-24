@@ -1,0 +1,4 @@
+{
+  "learning_rate": 3e-06,
+  "reward": "tests"
+}

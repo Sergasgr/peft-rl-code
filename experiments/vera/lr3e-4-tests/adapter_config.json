@@ -1,0 +1,1 @@
+{"peft_type": "VERA", "task_type": "CAUSAL_LM", "r": 256, "d_initial": 0.1, "projection_prng_key": 0, "save_projection": true}

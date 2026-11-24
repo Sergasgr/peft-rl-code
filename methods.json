@@ -1,0 +1,19 @@
+{
+  "pilot": {
+    "model_id": "Qwen/Qwen2.5-Coder-0.5B-Instruct",
+    "method": "lora",
+    "learning_rate": 1e-5,
+    "rewards": ["tests", "tests+quality", "quality"]
+  },
+  "methods": {
+    "lora":     {"adapter": "configs/adapters/lora.json",     "grid": [3e-6, 1e-5, 3e-5], "selected_lr": null, "extra_seeds": []},
+    "dora":     {"adapter": "configs/adapters/dora.json",     "grid": [3e-6, 1e-5, 3e-5], "selected_lr": null, "extra_seeds": []},
+    "pissa":    {"adapter": "configs/adapters/pissa.json",    "grid": [3e-6, 1e-5, 3e-5], "selected_lr": null, "extra_seeds": []},
+    "oft":      {"adapter": "configs/adapters/oft.json",      "grid": [3e-6, 1e-5, 3e-5], "selected_lr": null, "extra_seeds": []},
+    "vera":     {"adapter": "configs/adapters/vera.json",     "grid": [1e-4, 3e-4, 1e-3], "selected_lr": null, "extra_seeds": []},
+    "ia3":      {"adapter": "configs/adapters/ia3.json",      "grid": [1e-4, 3e-4, 1e-3], "selected_lr": null, "extra_seeds": []},
+    "tinylora": {"adapter": "configs/adapters/tinylora.json", "grid": [1e-4, 3e-4, 1e-3], "selected_lr": null, "extra_seeds": []},
+    "full":     {"adapter": null, "grid": [3e-7, 1e-6, 3e-6], "selected_lr": null, "extra_seeds": [],
+                 "training_params": {"optim": "adamw_bnb_8bit"}}
+  }
+}

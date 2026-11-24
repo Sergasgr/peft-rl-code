@@ -1,0 +1,1 @@
+{"peft_type": "OFT", "task_type": "CAUSAL_LM", "r": 32, "oft_block_size": 0, "target_modules": ["q_proj", "v_proj"]}

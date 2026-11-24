@@ -1,0 +1,42 @@
+[project]
+name = "peft-rl-code"
+version = "0.1.0"
+description = "Which PEFT methods work for RL on code when the reward combines unit tests and static analysis"
+readme = "README.md"
+requires-python = ">=3.12,<3.14"
+license = "MIT"
+dependencies = [
+    "torch>=2.8",
+    "transformers>=5.0",
+    "peft>=0.22",
+    "trl>=1.18",
+    "datasets>=4.0",
+    "accelerate>=1.10",
+    "bitsandbytes>=0.48",  # 8-bit AdamW, only for the full fine-tuning reference
+    "pytest>=8",           # runs KodCode's unit tests (reward and evaluation) and this repo's tests
+    # Quality tools are pinned: their numbers are part of the results.
+    "ruff==0.17.6",        # in the reward
+    "lizard==1.26.1",      # in the reward
+    "pylint==4.1.4",       # outside the reward
+    "radon==6.0.1",        # outside the reward
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+markers = [
+    "slow: trains tiny models on CPU (minutes)",
+    "network: downloads EvalPlus data and scores with uvx",
+]
+addopts = "-m 'not slow and not network'"
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = ["experiments"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM"]

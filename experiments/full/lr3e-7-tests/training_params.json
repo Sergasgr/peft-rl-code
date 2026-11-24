@@ -1,0 +1,5 @@
+{
+  "optim": "adamw_bnb_8bit",
+  "learning_rate": 3e-07,
+  "reward": "tests"
+}
